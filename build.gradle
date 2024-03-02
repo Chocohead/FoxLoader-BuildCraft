@@ -12,6 +12,10 @@ apply plugin: 'foxloader.dev'
 
 version '1.0'
 
+dependencies {
+	implementation.extendsFrom clientImplementation
+}
+
 foxloader {
 	modId = "buildcraft"
 	modName = "BuildCraft"
