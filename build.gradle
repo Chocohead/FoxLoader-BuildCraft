@@ -7,6 +7,9 @@ buildscript {
 		classpath('com.fox2code.FoxLoader:dev:1.2.29')
 	}
 }
+plugins {
+	id 'io.github.themrmilchmann.ecj' version '0.2.0'
+}
 
 apply plugin: 'foxloader.dev'
 
