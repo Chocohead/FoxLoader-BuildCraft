@@ -15,18 +15,20 @@ apply plugin: 'foxloader.dev'
 
 version '1.0'
 
-afterEvaluate {
-	sourceSets {
-		main {
-			java.srcDirs = ['empty']
-		}
-		client {
-			java.srcDirs += ['src/main/java']
-		}
-		/*server {
-			java.srcDirs += ['src/main/java']
-		}*/
+sourceSets {
+	main {
+		java.srcDirs = ['empty']
 	}
+	client {
+		java.srcDirs += ['src/main/java']
+	}
+	/*server {
+		java.srcDirs += ['src/main/java']
+	}*/
+}
+
+sourcesJar.configure {
+	from sourceSets.client.allSource
 }
 
 foxloader {
