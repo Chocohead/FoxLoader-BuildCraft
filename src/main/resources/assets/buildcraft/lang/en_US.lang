@@ -1,0 +1,26 @@
+item.buildcraft.wrench.name=Pipe Wrench
+item.buildcraft.woodenGear.name=Wooden Cog
+item.buildcraft.stoneGear.name=Stone Cog
+item.buildcraft.ironGear.name=Iron Cog
+item.buildcraft.goldGear.name=Gold Cog
+item.buildcraft.diamondGear.name=Diamond Cog
+
+item.buildcraft.pipeWaterproof.name=Pipe Waterproofing
+tile.buildcraft.itemPipe.name=Item Transport Pipe
+item.buildcraft.itemPipe.wooden.name=Wooden Transport Pipe
+item.buildcraft.itemPipe.cobble.name=Cobblestone Transport Pipe
+item.buildcraft.itemPipe.stone.name=Stone Transport Pipe
+item.buildcraft.itemPipe.sandstone.name=Sandstone Transport Pipe
+item.buildcraft.itemPipe.clay.name=Clay Transport Pipe
+item.buildcraft.itemPipe.iron.name=Iron Transport Pipe
+item.buildcraft.itemPipe.gold.name=Gold Transport Pipe
+item.buildcraft.itemPipe.diamond.name=Diamond Transport Pipe
+item.buildcraft.itemPipe.diamond.gui=Filters
+item.buildcraft.itemPipe.obsidian.name=Obsidian Transport Pipe
+
+tile.buildcraft.engine.name=Engine
+item.buildcraft.engine.geared.name=Geared Engine
+item.buildcraft.engine.steam.name=Steam Engine
+
+tile.buildcraft.frame.name=Frame
+tile.buildcraft.quarry.name=Quarry

@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.chocohead.buildcraft.mixins",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"IntHashMapMixin",
+		"IntHashMapMixin$IntHashMapEntryMixin",
+		"IntHashMapTinkering",
+		"TileEntityAccess"
+	]
+}

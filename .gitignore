@@ -1,0 +1,15 @@
+# Ignore everything
+/*
+
+!/.github
+!/src
+**/cut/
+
+!.gitignore
+!build.gradle
+!gradle.properties
+!gradlew
+!gradlew.bat
+!LICENSE
+!README.md
+!settings.gradle

@@ -1,0 +1,22 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url 'https://jitpack.io/' }
+	}
+	dependencies {
+		classpath('com.fox2code.FoxLoader:dev:1.2.29')
+	}
+}
+
+apply plugin: 'foxloader.dev'
+
+version '1.0'
+
+foxloader {
+	modId = "buildcraft"
+	modName = "BuildCraft"
+	modVersion = project.version
+	modDesc = "Extending Minecraft with pipes, quarries, and engines"
+	clientMod = "com.chocohead.buildcraft.BuildCraftClient"
+	includeServer = false
+}

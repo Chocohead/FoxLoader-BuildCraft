@@ -1,0 +1,12 @@
+{
+	"parent": "buildcraft.mixins.json",
+	"package": "com.chocohead.buildcraft.mixins.client",
+	"plugin": "com.chocohead.buildcraft.mixins.Plugin",
+	"mixins": [
+		"GuiDebugMixin",
+		"RenderBlocksMixin",
+		"RenderManagerAccess",
+		"TextureManagerMixin",
+		"TileEntityRendererAccess"
+	]
+}
