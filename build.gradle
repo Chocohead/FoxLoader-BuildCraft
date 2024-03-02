@@ -15,7 +15,7 @@ version '1.0'
 afterEvaluate {
 	sourceSets {
 		main {
-			java.srcDir 'empty'
+			java.srcDirs = ['empty']
 		}
 		client {
 			java.srcDirs += ['src/main/java']
