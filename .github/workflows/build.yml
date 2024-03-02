@@ -17,6 +17,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Assert file permissions
+      run: chmod +x ./gradlew
+
     - name: Build artifacts
       run: ./gradlew build
 
