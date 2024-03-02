@@ -13,8 +13,16 @@ apply plugin: 'foxloader.dev'
 version '1.0'
 
 afterEvaluate {
-	configurations {
-		implementation.extendsFrom clientImplementation
+	sourceSets {
+		main {
+			java.srcDir = 'empty'
+		}
+		client {
+			java.srcDirs += ['src/main/java']
+		}
+		/*server {
+			java.srcDirs += ['src/main/java']
+		}*/
 	}
 }
 
