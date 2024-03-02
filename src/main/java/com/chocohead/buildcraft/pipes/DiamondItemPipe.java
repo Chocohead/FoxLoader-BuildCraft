@@ -31,7 +31,7 @@ public class DiamondItemPipe extends Pipe<ItemPipeTransport> implements SpecialI
 	public void registerIcons(IconRegister register) {
 		TEXTURES.put(EnumDirection.UNKNOWN, activeTexture = register.registerIcon("buildcraft/diamondPipe"));
 		for (EnumDirection direction : EnumDirection.VALID_DIRECTIONS) {
-			TEXTURES.put(direction, register.registerIcon("buildcraft/diamondPipe" + WordUtils.capitalize(direction.name())));
+			TEXTURES.put(direction, register.registerIcon("buildcraft/diamondPipe" + WordUtils.capitalizeFully(direction.name())));
 		}
 	}
 
