@@ -35,7 +35,6 @@ public class IronPipeLogic extends PipeLogic {
 		super.initialize();
 
 		wasPowered = world.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
-		switchExit();
 	}
 
 	public void switchPowered() {
