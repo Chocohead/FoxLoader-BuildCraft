@@ -44,6 +44,8 @@ public class IronPipeLogic extends PipeLogic {
 			switchExit();
 
 			wasPowered = isPowered;
+		} else if (exit == EnumDirection.UNKNOWN) {
+			switchExit();
 		}
 	}
 
