@@ -17,6 +17,16 @@ public class StackUtil {
 			return ((ISpecialInventory) inventory).addItem(items, add, from);
 		}
 
+		boolean result = false;
+		boolean success;
+		do {
+			result |= success = checkAvailableSlotOnce(inventory, items, add, from);
+		} while (add && items.stackSize > 0 && success);
+
+		return result;
+	}
+
+	private static boolean checkAvailableSlotOnce(IInventory inventory, ItemStack items, boolean add, EnumDirection from) {
 		for (boolean addEmpty : new boolean[] {false, true}) {
 			switch (inventory.getSizeInventory()) {
 			case 2: //This is an input / output inventory
