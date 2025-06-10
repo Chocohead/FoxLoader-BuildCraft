@@ -68,7 +68,9 @@ public class BlockEntityRenderer extends EntityRenderer<BlockEntity> {
 						int lightX = (int) (Math.floor(entity.posX) + xBase);
 						int lightY = (int) (Math.floor(entity.posY) + yBase);
 						int lightZ = (int) (Math.floor(entity.posZ) + zBase);
-						float light = entity.worldObj.getBlockLightValue(lightX, lightY, lightZ);
+						//float light = entity.worldObj.getBlockLightValue(lightX, lightY, lightZ);
+						//float light = entity.getEntityBrightness(deltaTicks);
+						float light = Math.max(entity.worldObj.getLightBrightness(lightX, lightY, lightZ), entity.entityBrightness);
 						GL11.glDisable(GL11.GL_LIGHTING);
 						renderBlocks.renderBlockFallingSand(Blocks.SAND, 0, light);
 						GL11.glEnable(GL11.GL_LIGHTING);

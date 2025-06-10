@@ -1,7 +1,6 @@
 package com.chocohead.buildcraft.entities;
 
 import net.minecraft.common.entity.Entity;
-import net.minecraft.common.world.DataWatcher;
 import net.minecraft.common.world.World;
 import com.mojang.nbt.CompoundTag;
 
@@ -151,16 +150,8 @@ public class QuarryArmEntity extends Entity {
 		head.readFromNBT(headStore);
 	}
 
-	@Override
-	public void setWorld(World world) {
-		super.setWorld(world);
-
-		rand = world.rand;
-        dataWatcher = new DataWatcher();
-        dataWatcher.addObject(0, (byte) 0);
-	}
-
 	public void joinToWorld(World world) {
+		assert world == worldObj;
 		setWorld(world);
 		xArm.setWorld(world);
 		yArm.setWorld(world);

@@ -1,7 +1,6 @@
 package com.chocohead.buildcraft.entities;
 
 import net.minecraft.common.entity.Entity;
-import net.minecraft.common.world.DataWatcher;
 import net.minecraft.common.world.World;
 import com.mojang.nbt.CompoundTag;
 
@@ -70,15 +69,6 @@ public class BlockEntity extends Entity {
 		ySize = nbt.getDouble("ySize");
 		zSize = nbt.getDouble("zSize");
 		shadowSize = nbt.getFloat("shadow");
-	}
-
-	@Override
-	public void setWorld(World world) {
-		super.setWorld(world);
-
-		rand = world.rand;
-        dataWatcher = new DataWatcher();
-        dataWatcher.addObject(0, (byte) 0);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.chocohead.buildcraft.blocks;
 
+import java.util.Objects;
+
 import net.minecraft.common.util.Direction.EnumDirection;
 import net.minecraft.common.block.Block;
 import net.minecraft.common.block.Blocks;
@@ -77,7 +79,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 
 		if (nbt.getBoolean("hasArm")) {
 			CompoundTag armStore = nbt.getCompoundTag("arm");
-			arm = new QuarryArmEntity(worldObj);
+			arm = new QuarryArmEntity(Objects.requireNonNull(worldObj, "world"));
 			arm.readFromNBT(armStore);
 			arm.setListener(this);
 
@@ -96,7 +98,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 			}
 
 			initializeBluePrintBuilder();
-		}		
+		}
 
 		nextBlockForBluePrint = bluePrintBuilder.findNextBlock(worldObj);
 
@@ -197,7 +199,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 	}
 
 	private void createArm() {
-		arm = new QuarryArmEntity(worldObj, box.xMin + Utils.PIPE_MAX_POS,
+		arm = new QuarryArmEntity(Objects.requireNonNull(worldObj, "world"), box.xMin + Utils.PIPE_MAX_POS,
 				yCoord + bluePrintBuilder.bluePrint.sizeY - 1
 						+ Utils.PIPE_MIN_POS, box.zMin + Utils.PIPE_MAX_POS,
 				bluePrintBuilder.bluePrint.sizeX - 2 + Utils.PIPE_MIN_POS * 2,
