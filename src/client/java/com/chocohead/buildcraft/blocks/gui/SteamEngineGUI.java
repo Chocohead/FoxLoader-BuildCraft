@@ -2,10 +2,10 @@ package com.chocohead.buildcraft.blocks.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.client.gui.GuiContainer;
-import net.minecraft.src.client.gui.StringTranslate;
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.game.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.common.util.i18n.StringTranslate;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.entity.player.InventoryPlayer;
 
 import com.chocohead.buildcraft.blocks.EngineTileEntity;
 

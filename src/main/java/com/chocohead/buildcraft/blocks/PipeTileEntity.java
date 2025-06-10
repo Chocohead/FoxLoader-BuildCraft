@@ -1,7 +1,7 @@
 package com.chocohead.buildcraft.blocks;
 
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.block.tileentity.TileEntity;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.api.IPowerReceptor;
 import com.chocohead.buildcraft.api.PowerProvider;
@@ -21,7 +21,7 @@ public abstract class PipeTileEntity<T extends PipeTransport> extends TileEntity
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		super.writeToNBT(nbt);
 
 		//if (pipe != null) {		
@@ -33,7 +33,7 @@ public abstract class PipeTileEntity<T extends PipeTransport> extends TileEntity
 	protected abstract Pipe<T> loadPipe(String id);
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		super.readFromNBT(nbt);
 
 		pipe = loadPipe(nbt.getString("pipeId"));

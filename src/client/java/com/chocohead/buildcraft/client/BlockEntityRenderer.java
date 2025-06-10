@@ -5,17 +5,16 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.client.renderer.RenderBlocks;
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.client.renderer.entity.Render;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.entity.Entity;
+import net.minecraft.client.renderer.world.RenderBlocks;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.common.block.Blocks;
 
 import com.chocohead.buildcraft.entities.BlockEntity;
 import com.chocohead.buildcraft.entities.BlockEntity.Texture;
 
-public class BlockEntityRenderer extends Render {
+public class BlockEntityRenderer extends EntityRenderer<BlockEntity> {
 	public interface BlockEntityRenderBlocks {
 		void setBlockEntityRenderer(boolean flag);
 	}
@@ -34,38 +33,34 @@ public class BlockEntityRenderer extends Render {
 	}
 
 	@Override
-	public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch) {
-		doRender((BlockEntity) entity, x, y, z);
-	}
-
-	private void doRender(BlockEntity entity, double x, double y, double z) {
+	public void doRender(BlockEntity entity, double x, double y, double z, float yaw, float pitch) {
 		if (entity.isDead) {
 			return;
 		}
 
-		double originalMinX = Block.sand.minX;
-		double originalMinY = Block.sand.minY;
-		double originalMinZ = Block.sand.minZ;
-		double originalMaxX = Block.sand.maxX;
-		double originalMaxY = Block.sand.maxY;
-		double originalMaxZ = Block.sand.maxZ;
+		double originalMinX = Blocks.SAND.minX;
+		double originalMinY = Blocks.SAND.minY;
+		double originalMinZ = Blocks.SAND.minZ;
+		double originalMaxX = Blocks.SAND.maxX;
+		double originalMaxY = Blocks.SAND.maxY;
+		double originalMaxZ = Blocks.SAND.maxZ;
 		try {
-			Block.sand.minX = 0;
-			Block.sand.minY = 0;
-			Block.sand.minZ = 0;
+			Blocks.SAND.minX = 0;
+			Blocks.SAND.minY = 0;
+			Blocks.SAND.minZ = 0;
 
 			shadowSize = entity.shadowSize;
 			renderBlocks.setOverrideBlockTexture(textures.get(entity.texture));
 			loadTexture("/terrain.png");
 
 			for (int xBase = 0; xBase <= entity.xSize; ++xBase) {
-				Block.sand.maxX = Math.min(entity.xSize - xBase, 1);
+				Blocks.SAND.maxX = Math.min(entity.xSize - xBase, 1);
 
 				for (int yBase = 0; yBase <= entity.ySize; ++yBase) {
-					Block.sand.maxY = Math.min(entity.ySize - yBase, 1);
+					Blocks.SAND.maxY = Math.min(entity.ySize - yBase, 1);
 
 					for (int zBase = 0; zBase <= entity.zSize; ++zBase) {
-						Block.sand.maxZ = Math.min(entity.zSize - zBase, 1);
+						Blocks.SAND.maxZ = Math.min(entity.zSize - zBase, 1);
 
 						GL11.glPushMatrix();
 						GL11.glTranslatef((float)x + xBase + 0.5F, (float)y + yBase + 0.5F, (float)z + zBase + 0.5F);
@@ -73,20 +68,21 @@ public class BlockEntityRenderer extends Render {
 						int lightX = (int) (Math.floor(entity.posX) + xBase);
 						int lightY = (int) (Math.floor(entity.posY) + yBase);
 						int lightZ = (int) (Math.floor(entity.posZ) + zBase);
+						float light = entity.worldObj.getBlockLightValue(lightX, lightY, lightZ);
 						GL11.glDisable(GL11.GL_LIGHTING);
-						renderBlocks.renderBlockFallingSand(Block.sand, entity.worldObj, lightX, lightY, lightZ, 0);
+						renderBlocks.renderBlockFallingSand(Blocks.SAND, 0, light);
 						GL11.glEnable(GL11.GL_LIGHTING);
 						GL11.glPopMatrix();
 					}
 				}
 			}
 		} finally {
-			Block.sand.minX = originalMinX;
-			Block.sand.minY = originalMinY;
-			Block.sand.minZ = originalMinZ;
-			Block.sand.maxX = originalMaxX;
-			Block.sand.maxY = originalMaxY;
-			Block.sand.maxZ = originalMaxZ;
+			Blocks.SAND.minX = originalMinX;
+			Blocks.SAND.minY = originalMinY;
+			Blocks.SAND.minZ = originalMinZ;
+			Blocks.SAND.maxX = originalMaxX;
+			Blocks.SAND.maxY = originalMaxY;
+			Blocks.SAND.maxZ = originalMaxZ;
 		}
 	}
 }

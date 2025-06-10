@@ -2,9 +2,9 @@ package com.chocohead.buildcraft.api;
 
 import java.util.Objects;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import com.mojang.nbt.CompoundTag;
 
 public class Position {
 	public double x, y, z;
@@ -25,7 +25,7 @@ public class Position {
 		this(pos.x, pos.y, pos.z, pos.orientation);
 	}
 
-	public Position(NBTTagCompound nbt) {
+	public Position(CompoundTag nbt) {
 		this(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"));
 	}
 
@@ -113,7 +113,7 @@ public class Position {
 		moveUp(-step);
 	}
 
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		nbt.setDouble("x", x);
 		nbt.setDouble("y", y);
 		nbt.setDouble("z", z);

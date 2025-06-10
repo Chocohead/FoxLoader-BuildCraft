@@ -1,9 +1,9 @@
 package com.chocohead.buildcraft.entities;
 
-import net.minecraft.src.game.entity.Entity;
-import net.minecraft.src.game.level.DataWatcher;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.entity.Entity;
+import net.minecraft.common.world.DataWatcher;
+import net.minecraft.common.world.World;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.blocks.QuarryTileEntity;
 import com.chocohead.buildcraft.entities.BlockEntity.Texture;
@@ -75,7 +75,7 @@ public class QuarryArmEntity extends Entity {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(CompoundTag nbt) {
 		nbt.setDouble("sizeX", getSizeX());
 		nbt.setDouble("sizeZ", sizeZ);
 
@@ -94,10 +94,10 @@ public class QuarryArmEntity extends Entity {
 		nbt.setBoolean("progressionXZ", inProgressionXZ);
 		nbt.setBoolean("progressionY", inProgressionY);
 
-		NBTTagCompound xArmStore = new NBTTagCompound();
-		NBTTagCompound yArmStore = new NBTTagCompound();
-		NBTTagCompound zArmStore = new NBTTagCompound();
-		NBTTagCompound headStore = new NBTTagCompound();
+		CompoundTag xArmStore = new CompoundTag();
+		CompoundTag yArmStore = new CompoundTag();
+		CompoundTag zArmStore = new CompoundTag();
+		CompoundTag headStore = new CompoundTag();
 
 		nbt.setTag("xArm", xArmStore);
 		nbt.setTag("yArm", yArmStore);
@@ -111,7 +111,7 @@ public class QuarryArmEntity extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(CompoundTag nbt) {
 		sizeX = nbt.getDouble("sizeX");
 		sizeZ = nbt.getDouble("sizeZ");
 
@@ -130,10 +130,10 @@ public class QuarryArmEntity extends Entity {
 		inProgressionXZ = nbt.getBoolean("progressionXZ");
 		inProgressionY = nbt.getBoolean("progressionY");
 
-		NBTTagCompound xArmStore = nbt.getCompoundTag("xArm");
-		NBTTagCompound yArmStore = nbt.getCompoundTag("yArm");
-		NBTTagCompound zArmStore = nbt.getCompoundTag("zArm");
-		NBTTagCompound headStore = nbt.getCompoundTag("head");
+		CompoundTag xArmStore = nbt.getCompoundTag("xArm");
+		CompoundTag yArmStore = nbt.getCompoundTag("yArm");
+		CompoundTag zArmStore = nbt.getCompoundTag("zArm");
+		CompoundTag headStore = nbt.getCompoundTag("head");
 
 		xArm = new BlockEntity(worldObj);
 		yArm = new BlockEntity(worldObj);

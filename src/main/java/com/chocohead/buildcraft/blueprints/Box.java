@@ -1,7 +1,7 @@
 package com.chocohead.buildcraft.blueprints;
 
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.world.World;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.LaserKind;
 import com.chocohead.buildcraft.Proxy;
@@ -31,7 +31,7 @@ public class Box {
 		return xMin != Integer.MAX_VALUE;
 	}
 
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		nbt.setInteger("xMin", xMin);
 		nbt.setInteger("yMin", yMin);
 		nbt.setInteger("zMin", zMin);
@@ -40,7 +40,7 @@ public class Box {
 		nbt.setInteger("zMax", zMax);
 	}
 
-	public void initialize(NBTTagCompound nbt) {
+	public void initialize(CompoundTag nbt) {
 		xMin = nbt.getInteger("xMin");
 		yMin = nbt.getInteger("yMin");
 		zMin = nbt.getInteger("zMin");

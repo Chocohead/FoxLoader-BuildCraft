@@ -1,9 +1,9 @@
 package com.chocohead.buildcraft.pipes.logic;
 
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.item.ItemStack;
-import net.minecraft.src.game.nbt.NBTTagCompound;
-import net.minecraft.src.game.nbt.NBTTagList;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.item.ItemStack;
+import com.mojang.nbt.CompoundTag;
+import com.mojang.nbt.ListTag;
 
 import com.chocohead.buildcraft.Proxy;
 import com.chocohead.buildcraft.blocks.TransportPipeTileEntity;
@@ -13,14 +13,14 @@ public class DiamondPipeLogic extends PipeLogic {
 	protected final ItemStack[] items = new ItemStack[54];
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		super.writeToNBT(nbt);
 
-		NBTTagList items = new NBTTagList();
+		ListTag<CompoundTag> items = new ListTag<>();
 
 		for (int slot = 0; slot < this.items.length; slot++) {
 			if (this.items[slot] != null && this.items[slot].stackSize > 0) {
-				NBTTagCompound stack = new NBTTagCompound();
+				CompoundTag stack = new CompoundTag();
 				items.setTag(stack);
 				stack.setInteger("index", slot);
 				this.items[slot].writeToNBT(stack);	
@@ -31,25 +31,24 @@ public class DiamondPipeLogic extends PipeLogic {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		super.readFromNBT(nbt);
 
-		NBTTagList items = nbt.getTagList("items");
+		ListTag<CompoundTag> items = nbt.getTagList("items");
 
-		for (int i = 0; i < items.tagCount(); ++i) {
-			NBTTagCompound tag = (NBTTagCompound) items.tagAt(i);
+		for (CompoundTag tag : items) {
 			int index = tag.getInteger("index");
-			this.items[index] = new ItemStack(tag);
+			this.items[index] = ItemStack.loadItemStackFromNBT(tag);
 		}
 	}
 
 	@Override
 	public boolean blockActivated(EntityPlayer player) {
-		if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof PipeItem) {
+		if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof PipeItem) {
 			return false;
 		}
 
-		if (!world.multiplayerWorld) {
+		if (!world.isRemote) {
 			Proxy.displayDiamondPipeGUI(player, (TransportPipeTileEntity) container);
 		}
 

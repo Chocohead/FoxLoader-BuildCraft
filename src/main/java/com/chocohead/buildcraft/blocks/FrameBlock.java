@@ -1,34 +1,41 @@
 package com.chocohead.buildcraft.blocks;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import net.minecraft.src.client.physics.AxisAlignedBB;
-import net.minecraft.src.client.physics.MovingObjectPosition;
-import net.minecraft.src.client.renderer.Vec3D;
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.Material;
-import net.minecraft.src.game.level.IBlockAccess;
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.util.math.AxisAlignedBB;
+import net.minecraft.common.util.physics.MovingObjectPosition;
+import net.minecraft.common.util.math.Vec3D;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.item.block.ItemBlock;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.block.data.Materials;
+import net.minecraft.common.world.BlockAccess;
+import net.minecraft.common.world.World;
 
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.IPipeConnection;
 import com.chocohead.buildcraft.client.IPipeBlock;
-import com.chocohead.buildcraft.client.PipeRenderer;
 
 public class FrameBlock extends Block implements IPipeBlock, IPipeConnection {
 	private Icon texture;
 
-	public FrameBlock(int id) {
-		super(id, Material.glass);
+	public FrameBlock(String id) {
+		super(id, Materials.GLASS);
+	}
+
+	@Override
+	protected ItemBlock initializeItemBlock() {
+		ItemBlock out = new ItemBlock(this);
+		out.hideFromCreativeMenu();
+		return out;
 	}
 
 	@Override
 	public int getRenderType() {
-		return PipeRenderer.renderID;
+		return PipeBlock.renderID;
 	}
 
 	@Override
@@ -41,13 +48,8 @@ public class FrameBlock extends Block implements IPipeBlock, IPipeConnection {
 		return false;
 	}
 
-	//Server side
-	public boolean isACube() {
-		return false;
-	}
-
 	@Override
-	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB box, ArrayList<AxisAlignedBB> collisions) {
+	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB box, List<AxisAlignedBB> collisions) {
 		setBlockBounds(Utils.PIPE_MIN_POS, Utils.PIPE_MIN_POS, Utils.PIPE_MIN_POS, Utils.PIPE_MAX_POS, Utils.PIPE_MAX_POS, Utils.PIPE_MAX_POS);
 		super.getCollidingBoundingBoxes(world, x, y, z, box, collisions);
 
@@ -93,7 +95,7 @@ public class FrameBlock extends Block implements IPipeBlock, IPipeConnection {
 		float zMin = Utils.checkPipesConnections(world, x, y, z, x, y, z - 1) ? 0F : Utils.PIPE_MIN_POS;
 		float zMax = Utils.checkPipesConnections(world, x, y, z, x, y, z + 1) ? 1F : Utils.PIPE_MAX_POS;
 
-		return AxisAlignedBB.getBoundingBoxFromPool(x + xMin, y + yMin, z + zMin, x + xMax, y + yMax, z + zMax);
+		return AxisAlignedBB.getAABBPool().getAABB(x + xMin, y + yMin, z + zMin, x + xMax, y + yMax, z + zMax);
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public class FrameBlock extends Block implements IPipeBlock, IPipeConnection {
 	}
 
 	@Override
-	public boolean isPipeConnected(IBlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
+	public boolean isPipeConnected(BlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
 		return world.getBlockId(x2, y2, z2) == blockID;
 	}
 
@@ -134,7 +136,7 @@ public class FrameBlock extends Block implements IPipeBlock, IPipeConnection {
 		texture = register.registerIcon("buildcraft/frame");
 	}
 
-	public void prepareTextureFor(IBlockAccess world, int x, int y, int z, EnumDirection connection) {
+	public void prepareTextureFor(BlockAccess world, int x, int y, int z, EnumDirection connection) {
 	}
 
 	@Override

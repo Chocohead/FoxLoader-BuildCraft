@@ -1,8 +1,8 @@
 package com.chocohead.buildcraft.pipes;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.Direction.EnumDirection;
 
 import com.chocohead.buildcraft.pipes.logic.IronPipeLogic;
 import com.chocohead.buildcraft.pipes.transport.ItemPipeTransport;

@@ -1,36 +1,41 @@
 package com.chocohead.buildcraft.blocks;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import net.minecraft.src.client.physics.AxisAlignedBB;
-import net.minecraft.src.client.physics.MovingObjectPosition;
-import net.minecraft.src.client.renderer.Vec3D;
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.Material;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.Entity;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.level.IBlockAccess;
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.util.math.AxisAlignedBB;
+import net.minecraft.common.util.physics.MovingObjectPosition;
+import net.minecraft.common.util.math.Vec3D;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.data.Materials;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.Entity;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.world.BlockAccess;
+import net.minecraft.common.world.World;
 
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.IPipeConnection;
 import com.chocohead.buildcraft.client.IPipeBlock;
-import com.chocohead.buildcraft.client.PipeRenderer;
+import com.chocohead.buildcraft.items.PipeItem;
 import com.chocohead.buildcraft.pipes.Pipe;
 
 public abstract class PipeBlock extends MetaBlockContainer implements IPipeBlock, IPipeConnection {
-	public PipeBlock(int id) {
-		super(id, Material.glass);
+	public static int renderID;
+
+	public PipeBlock(String id) {
+		super(id, Materials.GLASS);
 
 		bypassMaximumMetadataLimit = true;
 	}
 
 	@Override
+	protected abstract PipeItem initializeItemBlock();
+
+	@Override
 	public int getRenderType() {
-		return PipeRenderer.renderID;
+		return renderID;
 	}
 
 	@Override
@@ -49,7 +54,7 @@ public abstract class PipeBlock extends MetaBlockContainer implements IPipeBlock
 	}
 
 	@Override
-	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB box, ArrayList<AxisAlignedBB> collisions) {
+	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB box, List<AxisAlignedBB> collisions) {
 		setBlockBounds(Utils.PIPE_MIN_POS, Utils.PIPE_MIN_POS, Utils.PIPE_MIN_POS, Utils.PIPE_MAX_POS, Utils.PIPE_MAX_POS, Utils.PIPE_MAX_POS);
 		super.getCollidingBoundingBoxes(world, x, y, z, box, collisions);
 
@@ -95,7 +100,7 @@ public abstract class PipeBlock extends MetaBlockContainer implements IPipeBlock
 		float zMin = Utils.checkPipesConnections(world, x, y, z, x, y, z - 1) ? 0F : Utils.PIPE_MIN_POS;
 		float zMax = Utils.checkPipesConnections(world, x, y, z, x, y, z + 1) ? 1F : Utils.PIPE_MAX_POS;
 
-		return AxisAlignedBB.getBoundingBoxFromPool(x + xMin, y + yMin, z + zMin, x + xMax, y + yMax, z + zMax);
+		return AxisAlignedBB.getAABBPool().getAABB(x + xMin, y + yMin, z + zMin, x + xMax, y + yMax, z + zMax);
 	}
 
 	@Override
@@ -160,7 +165,7 @@ public abstract class PipeBlock extends MetaBlockContainer implements IPipeBlock
 	}*/
 
 	@Override
-	public boolean isPipeConnected(IBlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
+	public boolean isPipeConnected(BlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
 		Pipe<?> pipe1 = getPipe(world, x1, y1, z1);
 		Pipe<?> pipe2 = getPipe(world, x2, y2, z2);
 
@@ -201,12 +206,13 @@ public abstract class PipeBlock extends MetaBlockContainer implements IPipeBlock
 		}
 	}
 
-	public void prepareTextureFor(IBlockAccess world, int x, int y, int z, EnumDirection connection) {
+	@Override //FIXME: Pull IPipeBlock across
+	public void prepareTextureFor(BlockAccess world, int x, int y, int z, EnumDirection connection) {
 		getPipe(world, x, y, z).prepareTextureFor(connection);
 	}
 
 	@Override
-	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int face) {
+	public Icon getBlockTexture(BlockAccess world, int x, int y, int z, int face, int meta) {
 		return getPipe(world, x, y, z).getBlockTexture();
 	}
 
@@ -229,7 +235,7 @@ public abstract class PipeBlock extends MetaBlockContainer implements IPipeBlock
 	}
 
 
-	public static Pipe<?> getPipe(IBlockAccess world, int x, int y, int z) {
+	public static Pipe<?> getPipe(BlockAccess world, int x, int y, int z) {
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 
 		Pipe<?> pipe = null;

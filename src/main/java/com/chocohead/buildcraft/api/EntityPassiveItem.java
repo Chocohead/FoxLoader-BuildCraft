@@ -1,11 +1,11 @@
 package com.chocohead.buildcraft.api;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.item.ItemStack;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.item.ItemStack;
+import net.minecraft.common.world.World;
+import com.mojang.nbt.CompoundTag;
 
 public class EntityPassiveItem {
 	public final SafeTimeTracker synchroTracker = new SafeTimeTracker();
@@ -46,26 +46,26 @@ public class EntityPassiveItem {
 		this.item = stack.copy();
 	}
 
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		posX = nbt.getDouble("x");
 		posY = nbt.getDouble("y");
 		posZ = nbt.getDouble("z");
 		speed = nbt.getFloat("speed");
-		item = new ItemStack(nbt.getCompoundTag("item"));
+		item = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("item"));
 	}
 
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		nbt.setDouble("x", posX);
 		nbt.setDouble("y", posY);
 		nbt.setDouble("z", posZ);
 		nbt.setFloat("speed", speed);
-		NBTTagCompound item = new NBTTagCompound();
+		CompoundTag item = new CompoundTag();
 		this.item.writeToNBT(item);
 		nbt.setCompoundTag("item", item);
 	}
 
 	public EntityItem toEntityItem(World world, EnumDirection dir) {
-		if (!world.multiplayerWorld) {
+		if (!world.isRemote) {
 			Position motion = new Position(0, 0, 0, dir);
 			motion.moveForwards(0.1 + speed * 2F);
 

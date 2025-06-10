@@ -1,8 +1,8 @@
 package com.chocohead.buildcraft.api;
 
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.item.ItemStack;
 
 /**
  * Pipes are able to get object in and out tile entities implementing inventory.

@@ -3,10 +3,10 @@ package com.chocohead.buildcraft.pipes;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
 
 import com.chocohead.buildcraft.api.EntityPassiveItem;
 import com.chocohead.buildcraft.api.IPipeEntry;

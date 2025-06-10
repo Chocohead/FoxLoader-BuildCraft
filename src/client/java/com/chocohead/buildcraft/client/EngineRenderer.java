@@ -2,65 +2,67 @@ package com.chocohead.buildcraft.client;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.client.model.Piece;
-import net.minecraft.src.client.renderer.RenderBlocks;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.MathHelper;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.block.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.src.game.level.IBlockAccess;
+import net.minecraft.client.renderer.entity.model.ModelBase;
+import net.minecraft.client.renderer.entity.model.Piece;
+import net.minecraft.client.renderer.world.RenderBlocks;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.util.math.MathHelper;
+import net.minecraft.common.block.Block;
+import net.minecraft.client.renderer.block.tileentity.TileEntityRenderer;
 
 import com.chocohead.buildcraft.blocks.EngineTileEntity;
-import com.chocohead.buildcraft.client.RenderTypeRegistry.RendererPlus;
 import com.chocohead.buildcraft.engines.Engine;
 import com.chocohead.buildcraft.engines.Engine.EnergyStage;
 import com.chocohead.buildcraft.engines.GearedEngine;
 import com.chocohead.buildcraft.engines.SteamEngine;
 
-public class EngineRenderer extends TileEntitySpecialRenderer implements RendererPlus {
-	public static int renderID;
+public class EngineRenderer extends TileEntityRenderer<EngineTileEntity> {
 	private final Piece box;
 	private final Piece trunk;
 	private final Piece movingBox;
 	private final Piece chamber;
 
 	public EngineRenderer() {
-		box = new Piece(0, 0);
+		ModelBase base = new ModelBase() {
+			@Override
+			protected void init() {
+			}
+		};
+
+		box = new Piece("box", base, 0, 0);
 		box.addBox(-8F, -8F, -8F, 16, 4, 16);		
-		box.rotationPointX = 8;
-		box.rotationPointY = 8;
-		box.rotationPointZ = 8;
+		box.pivotPointX = 8;
+		box.pivotPointY = 8;
+		box.pivotPointZ = 8;
 
-		trunk = new Piece(0, 0);
+		trunk = new Piece("trunk", base, 0, 0);
 		trunk.addBox(-4F, -4F, -4F, 8, 12, 8);
-		trunk.rotationPointX = 8F;
-		trunk.rotationPointY = 8F;
-		trunk.rotationPointZ = 8F;
+		trunk.pivotPointX = 8F;
+		trunk.pivotPointY = 8F;
+		trunk.pivotPointZ = 8F;
 
-		movingBox = new Piece(0, 0);
+		movingBox = new Piece("movingBox", base, 0, 0);
 		movingBox.addBox(-8F, -4, -8F, 16, 4, 16);
-		movingBox.rotationPointX = 8F;
-		movingBox.rotationPointY = 8F;
-		movingBox.rotationPointZ = 8F;
+		movingBox.pivotPointX = 8F;
+		movingBox.pivotPointY = 8F;
+		movingBox.pivotPointZ = 8F;
 
-		chamber = new Piece(0, 0);
+		chamber = new Piece("chamber", base, 0, 0);
 		chamber.addBox(-5F, -4, -5F, 10, 2, 10);
-		chamber.rotationPointX = 8F;
-		chamber.rotationPointY = 8F;
-		chamber.rotationPointZ = 8F;
+		chamber.pivotPointX = 8F;
+		chamber.pivotPointY = 8F;
+		chamber.pivotPointZ = 8F;
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int progress) {
-		Engine engine = ((EngineTileEntity) tile).getEngine();
+	public void renderTileEntityAt(EngineTileEntity tile, double x, double y, double z, float partialTicks, int progress) {
+		Engine engine = tile.getEngine();
 
 		if (engine != null) {
 			render(engine.getEnergyStage(), engine.progress, engine.orientation, engine.getTextureFile(), (float) x, (float) y, (float) z);
 		}
 	}
 
-	@Override
 	public void render(RenderBlocks rb, Block block, int damage) {
 		String baseTexture;
 		switch (damage) {
@@ -92,11 +94,11 @@ public class EngineRenderer extends TileEntitySpecialRenderer implements Rendere
 		float[] translate = {0, 0, 0};
 		switch (orientation) {
 		case EAST:
-			angle[2] = -MathHelper.PI_HALF_F;
+			angle[2] = -MathHelper.PI_HALF;
 			translate[0] = 1;
 			break;
 		case WEST:
-			angle[2] = MathHelper.PI_HALF_F;
+			angle[2] = MathHelper.PI_HALF;
 			translate[0] = -1;
 			break;
 		case UP:
@@ -107,11 +109,11 @@ public class EngineRenderer extends TileEntitySpecialRenderer implements Rendere
 			translate[1] = -1;
 			break;
 		case SOUTH:
-			angle[0] = MathHelper.PI_HALF_F;
+			angle[0] = MathHelper.PI_HALF;
 			translate[2] = 1;
 			break;
 		case NORTH:
-			angle[0] = -MathHelper.PI_HALF_F;
+			angle[0] = -MathHelper.PI_HALF;
 			translate[2] = -1;
 			break;
 		case UNKNOWN:
@@ -158,9 +160,5 @@ public class EngineRenderer extends TileEntitySpecialRenderer implements Rendere
 
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
-	}
-
-	@Override
-	public void render(RenderBlocks rb, IBlockAccess world, int x, int y, int z, Block block) {
 	}
 }

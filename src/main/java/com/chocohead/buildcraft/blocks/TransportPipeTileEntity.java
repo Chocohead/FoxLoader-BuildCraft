@@ -1,8 +1,8 @@
 package com.chocohead.buildcraft.blocks;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.item.ItemStack;
 
 import com.chocohead.buildcraft.api.EntityPassiveItem;
 import com.chocohead.buildcraft.api.IPipeEntry;

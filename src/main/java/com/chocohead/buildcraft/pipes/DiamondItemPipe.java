@@ -5,12 +5,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.text.WordUtils;
+import com.google.common.base.CaseFormat;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.item.ItemStack;
 
 import com.chocohead.buildcraft.api.EntityPassiveItem;
 import com.chocohead.buildcraft.api.Position;
@@ -31,7 +31,7 @@ public class DiamondItemPipe extends Pipe<ItemPipeTransport> implements SpecialI
 	public void registerIcons(IconRegister register) {
 		TEXTURES.put(EnumDirection.UNKNOWN, activeTexture = register.registerIcon("buildcraft/diamondPipe"));
 		for (EnumDirection direction : EnumDirection.VALID_DIRECTIONS) {
-			TEXTURES.put(direction, register.registerIcon("buildcraft/diamondPipe" + WordUtils.capitalizeFully(direction.name())));
+			TEXTURES.put(direction, register.registerIcon("buildcraft/diamondPipe" + CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.UPPER_CAMEL).convert(direction.name())));
 		}
 	}
 
@@ -62,7 +62,7 @@ public class DiamondItemPipe extends Pipe<ItemPipeTransport> implements SpecialI
 				ItemStack stack = logic.getStackInSlot(dir.ordinal() * 9 + slot);
 				foundFilter |= stack != null;
 
-				if (stack != null && stack.itemID == item.item.itemID) {
+				if (stack != null && stack.getItemID() == item.item.getItemID()) {
 					if (item.item.getItem().isDamagable() || stack.getItemDamage() == item.item.getItemDamage()) {
 						filteredDirections.add(dir);
 					}

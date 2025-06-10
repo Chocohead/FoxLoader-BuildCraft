@@ -1,9 +1,9 @@
 package com.chocohead.buildcraft.entities;
 
-import net.minecraft.src.game.entity.Entity;
-import net.minecraft.src.game.level.DataWatcher;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.entity.Entity;
+import net.minecraft.common.world.DataWatcher;
+import net.minecraft.common.world.World;
+import com.mojang.nbt.CompoundTag;
 
 public class BlockEntity extends Entity {
 	public enum Texture {
@@ -57,7 +57,7 @@ public class BlockEntity extends Entity {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
+	protected void writeEntityToNBT(CompoundTag nbt) {
 		nbt.setDouble("xSize", xSize);
 		nbt.setDouble("ySize", ySize);
 		nbt.setDouble("zSize", zSize);
@@ -65,7 +65,7 @@ public class BlockEntity extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
+	protected void readEntityFromNBT(CompoundTag nbt) {
 		xSize = nbt.getDouble("xSize");
 		ySize = nbt.getDouble("ySize");
 		zSize = nbt.getDouble("zSize");

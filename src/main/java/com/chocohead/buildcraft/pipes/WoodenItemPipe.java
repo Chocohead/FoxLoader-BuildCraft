@@ -1,11 +1,11 @@
 package com.chocohead.buildcraft.pipes;
 
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.item.ItemStack;
 
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.EntityPassiveItem;

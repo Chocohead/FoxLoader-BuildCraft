@@ -1,15 +1,16 @@
 package com.chocohead.buildcraft.items;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.item.ItemBlock;
-import net.minecraft.src.game.item.ItemStack;
+import java.util.ArrayList;
 
-import com.fox2code.foxloader.registry.GameRegistry;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.block.Blocks;
+import net.minecraft.common.item.block.ItemBlock;
+import net.minecraft.common.item.ItemStack;
 
 public class EngineItem extends ItemBlock {
-	public EngineItem(Block block, int id) {
-		super(id - GameRegistry.PARAM_ITEM_ID_DIFF, block.blockID);
+	public EngineItem(Block block) {
+		super(block);
 
 		setHasSubtypes(true);
 		setMaxDamage(0);
@@ -17,7 +18,7 @@ public class EngineItem extends ItemBlock {
 
 	@Override
 	public Icon getIconFromDamage(int damage) {
-		return Block.blocksList[blockID].getIcon(1, damage);
+		return Blocks.BLOCKS_LIST[blockID].getIcon(1, damage);
 	}
 
 	@Override
@@ -36,5 +37,12 @@ public class EngineItem extends ItemBlock {
 	@Override
 	public int getPlacedBlockMetadata(int damage) {
 		return damage;
+	}
+
+	@Override
+	public void populateCreativeInventory(ArrayList<ItemStack> stacks) {
+		for (int i = 0; i <= 1; i++) {
+			stacks.add(new ItemStack(this, 1, i));
+		}
 	}
 }

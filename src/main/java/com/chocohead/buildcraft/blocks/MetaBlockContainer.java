@@ -1,14 +1,14 @@
 package com.chocohead.buildcraft.blocks;
 
-import net.minecraft.src.game.block.BlockContainer;
-import net.minecraft.src.game.block.Material;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.block.children.BlockContainer;
+import net.minecraft.common.block.data.Material;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.world.World;
 
 public abstract class MetaBlockContainer extends BlockContainer {
 	private int teMeta = -1;
 
-	protected MetaBlockContainer(int id, Material material) {
+	protected MetaBlockContainer(String id, Material material) {
 		super(id, material);
 	}
 
@@ -23,7 +23,7 @@ public abstract class MetaBlockContainer extends BlockContainer {
 	}
 
 	@Override
-	protected final TileEntity getBlockEntity() {
+	public final TileEntity getBlockEntity() {
 		if (teMeta < 0) throw new UnsupportedOperationException("Didn't call onBlockAdded before getBlockEntity");
 		return getTileEntity(teMeta);
 	}

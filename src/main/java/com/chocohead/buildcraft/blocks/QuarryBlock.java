@@ -1,15 +1,16 @@
 package com.chocohead.buildcraft.blocks;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.MathHelper;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.BlockContainer;
-import net.minecraft.src.game.block.Material;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.EntityLiving;
-import net.minecraft.src.game.level.IBlockAccess;
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.math.MathHelper;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.children.BlockContainer;
+import net.minecraft.common.block.data.Materials;
+import net.minecraft.common.block.sound.StepSounds;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.EntityLiving;
+import net.minecraft.common.world.BlockAccess;
+import net.minecraft.common.world.World;
 
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.IPipeConnection;
@@ -17,12 +18,12 @@ import com.chocohead.buildcraft.api.IPipeConnection;
 public class QuarryBlock extends BlockContainer implements IPipeConnection {
 	private Icon frontTexture, sideTexture, topTexture;
 
-	public QuarryBlock(int id) {
-		super(id, Material.iron);
+	public QuarryBlock(String id) {
+		super(id, Materials.METAL);
 
 		setHardness(1.5F);
 		setResistance(10F);
-		setSound(soundStone);
+		setSound(StepSounds.SOUND_STONE);
 	}
 
 	@Override
@@ -69,12 +70,12 @@ public class QuarryBlock extends BlockContainer implements IPipeConnection {
 	}
 
 	@Override
-	protected TileEntity getBlockEntity() {		
+	public TileEntity getBlockEntity() {		
 		return new QuarryTileEntity();
 	}
 
 	@Override
-	public boolean isPipeConnected(IBlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
+	public boolean isPipeConnected(BlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
 		return true;
 	}
 

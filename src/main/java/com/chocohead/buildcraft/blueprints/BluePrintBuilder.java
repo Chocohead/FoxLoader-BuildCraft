@@ -1,6 +1,6 @@
 package com.chocohead.buildcraft.blueprints;
 
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.world.World;
 
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.IAreaProvider;

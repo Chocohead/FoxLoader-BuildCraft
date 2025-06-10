@@ -2,7 +2,7 @@ package com.chocohead.buildcraft.pipes.transport;
 
 import java.util.List;
 
-import net.minecraft.src.game.Direction.EnumDirection;
+import net.minecraft.common.util.Direction.EnumDirection;
 
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.EntityPassiveItem;

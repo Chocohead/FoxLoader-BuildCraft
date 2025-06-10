@@ -1,11 +1,12 @@
 package com.chocohead.buildcraft.blocks;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.item.ItemStack;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.block.Blocks;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.item.ItemStack;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.BuildCraft;
 import com.chocohead.buildcraft.LaserKind;
@@ -41,10 +42,10 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		super.writeToNBT(nbt);		
 
-		NBTTagCompound power = new NBTTagCompound();
+		CompoundTag power = new CompoundTag();
 		this.power.writeToNBT(power);
 		nbt.setCompoundTag("power", power);
 		nbt.setInteger("targetX", targetX);
@@ -53,18 +54,18 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 		nbt.setBoolean("hasArm", arm != null);
 
 		if (arm != null) {
-			NBTTagCompound armStore = new NBTTagCompound();
+			CompoundTag armStore = new CompoundTag();
 			nbt.setTag("arm", armStore);
 			arm.writeToNBT(armStore);
 		}
 
-		NBTTagCompound boxTag = new NBTTagCompound();
+		CompoundTag boxTag = new CompoundTag();
 		box.writeToNBT(boxTag);
 		nbt.setTag("box", boxTag);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		super.readFromNBT(nbt);
 
 		power.readFromNBT(nbt.getCompoundTag("power"));
@@ -75,7 +76,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 		targetZ = nbt.getInteger("targetZ");
 
 		if (nbt.getBoolean("hasArm")) {
-			NBTTagCompound armStore = nbt.getCompoundTag("arm");
+			CompoundTag armStore = nbt.getCompoundTag("arm");
 			arm = new QuarryArmEntity(worldObj);
 			arm.readFromNBT(armStore);
 			arm.setListener(this);
@@ -85,7 +86,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 	}
 
 	protected void createUtilsIfNeeded() {
-		if (!box.isInitialized() && worldObj.multiplayerWorld) {
+		if (!box.isInitialized() && worldObj.isRemote) {
 			return;
 		}
 
@@ -174,22 +175,22 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 
 		for (int i = 0; i < 2; i++) {
 			for (int x = 0; x < bluePrint.sizeX; x++) {
-				bluePrint.setBlockId(x, i * (box.sizeY() - 1), 0, BuildCraft.frame.getRegisteredBlockId());
-				bluePrint.setBlockId(x, i * (box.sizeY() - 1), bluePrint.sizeZ - 1, BuildCraft.frame.getRegisteredBlockId());
+				bluePrint.setBlockId(x, i * (box.sizeY() - 1), 0, BuildCraft.frame.blockID);
+				bluePrint.setBlockId(x, i * (box.sizeY() - 1), bluePrint.sizeZ - 1, BuildCraft.frame.blockID);
 			}
 
 			for (int z = 0; z < bluePrint.sizeZ; z++) {
-				bluePrint.setBlockId(0, i * (box.sizeY() - 1), z, BuildCraft.frame.getRegisteredBlockId());
-				bluePrint.setBlockId(bluePrint.sizeX - 1, i * (box.sizeY() - 1), z, BuildCraft.frame.getRegisteredBlockId());
+				bluePrint.setBlockId(0, i * (box.sizeY() - 1), z, BuildCraft.frame.blockID);
+				bluePrint.setBlockId(bluePrint.sizeX - 1, i * (box.sizeY() - 1), z, BuildCraft.frame.blockID);
 
 			}
 		}
 
 		for (int y = 1; y < box.sizeY(); y++) {
-			bluePrint.setBlockId(0, y, 0, BuildCraft.frame.getRegisteredBlockId());
-			bluePrint.setBlockId(0, y, bluePrint.sizeZ - 1, BuildCraft.frame.getRegisteredBlockId());
-			bluePrint.setBlockId(bluePrint.sizeX - 1, y, 0, BuildCraft.frame.getRegisteredBlockId());
-			bluePrint.setBlockId(bluePrint.sizeX - 1, y, bluePrint.sizeZ - 1, BuildCraft.frame.getRegisteredBlockId());
+			bluePrint.setBlockId(0, y, 0, BuildCraft.frame.blockID);
+			bluePrint.setBlockId(0, y, bluePrint.sizeZ - 1, BuildCraft.frame.blockID);
+			bluePrint.setBlockId(bluePrint.sizeX - 1, y, 0, BuildCraft.frame.blockID);
+			bluePrint.setBlockId(bluePrint.sizeX - 1, y, bluePrint.sizeZ - 1, BuildCraft.frame.blockID);
 		}
 
 		bluePrintBuilder = new BluePrintBuilder(bluePrint, box.xMin, yCoord, box.zMin);
@@ -209,7 +210,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 	@Override
 	public void updateEntity() {
 		if (!initialised) {
-			if (!worldObj.multiplayerWorld) {
+			if (!worldObj.isRemote) {
 				createUtilsIfNeeded();
 			}
 
@@ -232,7 +233,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 	
 	@Override
 	public void doWork() {
-		if (worldObj.multiplayerWorld) return;
+		if (worldObj.isRemote) return;
 
 		if (inProcess) {
 			return;
@@ -359,7 +360,7 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 	public void positionReached(QuarryArmEntity arm) {
 		inProcess = false;
 
-		if (worldObj.multiplayerWorld) return;
+		if (worldObj.isRemote) return;
 
 		int x = (int) targetX;
 		int y = (int) targetY - 1;
@@ -401,11 +402,11 @@ public class QuarryTileEntity extends TileEntity implements IPowerReceptor {
 	}
 
 	private static boolean canDig(int blockID) {
-		return !Utils.isUnbreakableBlock(blockID) && !Utils.isSoftBlock(blockID) && blockID != Block.snowPile.blockID;
+		return !Utils.isUnbreakableBlock(blockID) && !Utils.isSoftBlock(blockID) && blockID != Blocks.SNOW_PILE.blockID;
 	}
 
 	private ItemStack getItemStackFromBlock(int x, int y, int z) {
-		Block block = Block.blocksList[worldObj.getBlockId(x, y, z)];
+		Block block = Blocks.BLOCKS_LIST[worldObj.getBlockId(x, y, z)];
 		if (block == null) {
 			return null;
 		}

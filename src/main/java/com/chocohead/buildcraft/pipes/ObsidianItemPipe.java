@@ -1,15 +1,14 @@
 package com.chocohead.buildcraft.pipes;
 
-import net.minecraft.src.client.physics.AxisAlignedBB;
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.entity.Entity;
-import net.minecraft.src.game.entity.other.EntityArrow;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.entity.other.EntityMinecart;
-import net.minecraft.src.game.item.Item;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.common.util.math.AxisAlignedBB;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.entity.Entity;
+import net.minecraft.common.entity.projectile.EntityThrownArrow;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.entity.other.EntityMinecart;
+import net.minecraft.common.item.ItemStack;
 
 import java.util.Arrays;
 
@@ -19,6 +18,7 @@ import com.chocohead.buildcraft.api.EntityPassiveItem;
 import com.chocohead.buildcraft.api.IPowerReceptor;
 import com.chocohead.buildcraft.api.Position;
 import com.chocohead.buildcraft.api.PowerProvider;
+import com.chocohead.buildcraft.mixins.EntityThrownArrowAccess;
 import com.chocohead.buildcraft.pipes.logic.ObsidianPipeLogic;
 import com.chocohead.buildcraft.pipes.transport.ItemPipeTransport;
 
@@ -78,7 +78,7 @@ public class ObsidianItemPipe extends Pipe<ItemPipeTransport> implements IPowerR
 			}
 
 			return power.useEnergy(1, distance, false) >= distance;
-		} else if (entity instanceof EntityArrow) {
+		} else if (entity instanceof EntityThrownArrow) {
 			return power.useEnergy(1, distance, false) >= distance;
 		} else {
 			return false;
@@ -179,7 +179,7 @@ public class ObsidianItemPipe extends Pipe<ItemPipeTransport> implements IPowerR
 
 		Position min = p1.min(p2);
 		Position max = p1.max(p2);
-		return AxisAlignedBB.getBoundingBoxFromPool(min.x, min.y, min.z, max.x, max.y, max.z);	
+		return AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x, max.y, max.z);	
 	}
 
 	private boolean trySuck(EnumDirection orientation, int distance) {
@@ -221,7 +221,7 @@ public class ObsidianItemPipe extends Pipe<ItemPipeTransport> implements IPowerR
 	}
 
 	public void pullItemIntoPipe(Entity entity, EnumDirection orientation, int distance) {
-		if (world.multiplayerWorld) return;		
+		if (world.isRemote) return;		
 
 		if (orientation != EnumDirection.UNKNOWN) {
 			world.playSoundAtEntity(
@@ -242,9 +242,9 @@ public class ObsidianItemPipe extends Pipe<ItemPipeTransport> implements IPowerR
 				} else {
 					stack = item.item.splitStack(energyUsed / distance);
 				}
-			} else if (entity instanceof EntityArrow) {
+			} else if (entity instanceof EntityThrownArrow) {
 				power.useEnergy(distance, distance, true);
-				stack = new ItemStack(Item.arrow, 1);
+				stack = ((EntityThrownArrowAccess) entity).callGetArrowItemstack();
 				Proxy.removeEntity(entity);
 			}
 

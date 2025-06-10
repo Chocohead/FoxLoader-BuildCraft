@@ -1,7 +1,7 @@
 package com.chocohead.buildcraft.engines;
 
-import net.minecraft.src.game.block.tileentity.TileEntityFurnace;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.block.tileentity.TileEntityFurnace;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.blocks.EngineTileEntity;
 
@@ -15,7 +15,7 @@ public class SteamEngine extends Engine {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("burnTime", burnTime);
@@ -23,7 +23,7 @@ public class SteamEngine extends Engine {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		super.readFromNBT(nbt);
 
 		burnTime = nbt.getInteger("burnTime");

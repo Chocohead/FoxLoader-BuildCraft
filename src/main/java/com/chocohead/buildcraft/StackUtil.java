@@ -1,9 +1,9 @@
 package com.chocohead.buildcraft;
 
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class StackUtil {
 		} else {
 			if (stack == null) {
 				if (doAdd) {
-					stack = new ItemStack(items.itemID, 1, items.getItemDamage());
+					stack = new ItemStack(items.getItemID(), 1, items.getItemDamage());
 					items.stackSize--;
 					inventory.setInventorySlotContents(slot, stack);
 				}

@@ -2,8 +2,8 @@ package com.chocohead.buildcraft.engines;
 
 import java.util.Locale;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.util.Direction.EnumDirection;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.blocks.EngineTileEntity;
 
@@ -39,13 +39,13 @@ public abstract class Engine {
 		this.maxEnergyReceived = maxEnergyReceived;
 	}
 
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		nbt.setInteger("orientation", orientation.ordinal());
 		nbt.setFloat("progress", progress);
 		nbt.setInteger("energy", energy);
 	}
 
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		orientation = EnumDirection.VALID_DIRECTIONS[nbt.getInteger("orientation")];
 		progress = nbt.getFloat("progress");
     	energy = nbt.getInteger("energy");

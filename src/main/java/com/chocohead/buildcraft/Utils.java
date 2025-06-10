@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.client.inventory.InventoryLargeChest;
-import net.minecraft.src.game.Direction;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.Material;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.block.tileentity.TileEntityChest;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.item.ItemStack;
-import net.minecraft.src.game.level.IBlockAccess;
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.entity.inventory.InventoryLargeChest;
+import net.minecraft.common.util.Direction;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.block.Blocks;
+import net.minecraft.common.block.data.Materials;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.block.tileentity.TileEntityChest;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.item.ItemStack;
+import net.minecraft.common.world.BlockAccess;
+import net.minecraft.common.world.World;
 
 import com.chocohead.buildcraft.api.EntityPassiveItem;
 import com.chocohead.buildcraft.api.IPipeConnection;
@@ -34,9 +35,9 @@ public class Utils {
 		return PIPE_MIN_POS;
 	}
 
-	public static boolean checkPipesConnections(IBlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
-		Block b1 = Block.blocksList[world.getBlockId(x1, y1, z1)];
-		Block b2 = Block.blocksList[world.getBlockId(x2, y2, z2)];
+	public static boolean checkPipesConnections(BlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
+		Block b1 = Blocks.BLOCKS_LIST[world.getBlockId(x1, y1, z1)];
+		Block b2 = Blocks.BLOCKS_LIST[world.getBlockId(x2, y2, z2)];
 
 		IPipeConnection pipe1 = b1 instanceof IPipeConnection ? (IPipeConnection) b1 : null;
 		IPipeConnection pipe2 = b2 instanceof IPipeConnection ? (IPipeConnection) b2 : null;
@@ -109,7 +110,7 @@ public class Utils {
 	public static void preDestroyBlock(World world, int x, int y, int z) {
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-		if (tile instanceof IInventory && !world.multiplayerWorld) {
+		if (tile instanceof IInventory && !world.isRemote) {
 			dropItems(world, x, y, z, (IInventory) tile);
 		}
 	}
@@ -170,13 +171,13 @@ public class Utils {
 	}
 
 	public static boolean isSoftBlock(int blockID) {
-		Block block = Block.blocksList[blockID];
-		return block == null || block.blockMaterial == Material.air || blockID == Block.waterStill.blockID || blockID == Block.waterMoving.blockID;
+		Block block = Blocks.BLOCKS_LIST[blockID];
+		return block == null || block.blockMaterial == Materials.AIR || blockID == Blocks.WATER_STILL.blockID || blockID == Blocks.WATER_MOVING.blockID;
 	}
 
 	public static boolean isUnbreakableBlock(int blockID) {
-		Block block = Block.blocksList[blockID];
-		return (block != null && block.getHardness() < 0) || blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID;
+		Block block = Blocks.BLOCKS_LIST[blockID];
+		return (block != null && block.getHardness() < 0) || blockID == Blocks.LAVA_STILL.blockID || blockID == Blocks.LAVA_MOVING.blockID;
 	}
 
 	public static BlockEntity[] createLaserBox(World world, double xMin, double yMin, double zMin, double xMax, double yMax, double zMax, LaserKind kind) {

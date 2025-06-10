@@ -1,9 +1,9 @@
 package com.chocohead.buildcraft.client;
 
-import net.minecraft.src.client.renderer.entity.Render;
-import net.minecraft.src.game.entity.Entity;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.common.entity.Entity;
 
-public class NothingRenderer extends Render {
+public class NothingRenderer extends EntityRenderer<Entity> {
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch) {
 	}

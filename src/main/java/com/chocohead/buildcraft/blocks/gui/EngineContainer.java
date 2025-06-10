@@ -1,21 +1,23 @@
 package com.chocohead.buildcraft.blocks.gui;
 
-import net.minecraft.src.client.gui.Container;
-import net.minecraft.src.client.gui.Slot;
-import net.minecraft.src.game.block.tileentity.TileEntityFurnace;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.entity.player.InventoryPlayer;
-import net.minecraft.src.game.item.ItemStack;
-import net.minecraft.src.game.recipe.ICrafting;
+import net.minecraft.common.block.container.Container;
+import net.minecraft.common.block.container.Slot;
+import net.minecraft.common.block.tileentity.TileEntityFurnace;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.entity.player.InventoryPlayer;
+import net.minecraft.common.item.ItemStack;
+import net.minecraft.common.recipe.ICrafting;
 
 import com.chocohead.buildcraft.blocks.EngineTileEntity;
 import com.chocohead.buildcraft.engines.SteamEngine;
 
 public class EngineContainer extends Container {
+	private final EntityPlayer player;
 	protected final EngineTileEntity engine;
 	protected int scaledBurnTime;
 
 	public EngineContainer(InventoryPlayer player, EngineTileEntity tile) {
+		this.player = player.player;
 		engine = tile;
 
 		if (tile.getEngine() instanceof SteamEngine) {
@@ -41,11 +43,8 @@ public class EngineContainer extends Container {
 
 		int targetBurnTime = engine.getEngine().getScaledBurnTime(12);
 		if (scaledBurnTime != targetBurnTime) {
-			for (Object thing : field_20121_g) {
-				if (!(thing instanceof ICrafting)) continue; //How did you get in there?
-				ICrafting watcher = (ICrafting) thing;
-
-				watcher.func_20158_a(this, 0, targetBurnTime);
+			for (ICrafting watcher : crafters) {
+				watcher.updateCraftingInventoryInfo(this, 0, targetBurnTime);
 			}
 
 			scaledBurnTime = targetBurnTime;
@@ -95,7 +94,7 @@ public class EngineContainer extends Container {
 				return null;
 			}
 
-			slot.onPickupFromSlot(slotStack);
+			slot.onPickupFromSlot(player, slotStack);
 		}
 
 		return returnStack;

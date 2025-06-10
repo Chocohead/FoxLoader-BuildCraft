@@ -1,8 +1,8 @@
 package com.chocohead.buildcraft.api;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.world.World;
 
 public interface IAreaProvider {
 	int xMin();

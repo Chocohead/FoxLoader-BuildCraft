@@ -2,20 +2,21 @@ package com.chocohead.buildcraft.client;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.client.renderer.RenderBlocks;
-import net.minecraft.src.client.renderer.Tessellator;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.level.IBlockAccess;
+import net.minecraft.client.renderer.world.RenderBlocks;
+import net.minecraft.client.renderer.world.Tessellator;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.world.BlockAccess;
 
 import com.chocohead.buildcraft.Utils;
-import com.chocohead.buildcraft.client.RenderTypeRegistry.RendererPlus;
 
-public class PipeRenderer implements RendererPlus {
-	public static int renderID;
+public class PipeRenderer extends BlockRenderPlus {
+	public PipeRenderer() {
+		super(true);
+	}
 
 	@Override
-	public void render(RenderBlocks rb, IBlockAccess world, int x, int y, int z, Block block) {
+	public boolean renderBlock(RenderBlocks rb, BlockAccess world, Block block, int x, int y, int z) {
 		IPipeBlock pipe = (IPipeBlock) block;
 		float minSize = Utils.PIPE_MIN_POS;
 		float maxSize = Utils.PIPE_MAX_POS;
@@ -62,6 +63,7 @@ public class PipeRenderer implements RendererPlus {
 
 		block.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
 		pipe.prepareTextureFor(world, x, y, z, EnumDirection.UNKNOWN); //Reset the active texture
+		return true;
 	}
 
 	@Override

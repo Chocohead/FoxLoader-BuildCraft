@@ -1,8 +1,8 @@
 package com.chocohead.buildcraft.client;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.level.IBlockAccess;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.world.BlockAccess;
 
 public interface IPipeBlock {
-	void prepareTextureFor(IBlockAccess world, int x, int y, int z, EnumDirection connection);
+	void prepareTextureFor(BlockAccess world, int x, int y, int z, EnumDirection connection);
 }

@@ -4,9 +4,12 @@
 	"package": "com.chocohead.buildcraft.mixins",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
-		"IntHashMapMixin",
-		"IntHashMapMixin$IntHashMapEntryMixin",
-		"IntHashMapTinkering",
-		"TileEntityAccess"
+		"EntityThrownArrowAccess"
+	],
+	"client": [
+		"client.EntityRendererManagerMixin",
+		"client.GuiDebugMixin",
+		"client.RenderBlocksMixin",
+		"client.TextureManagerMixin"
 	]
 }

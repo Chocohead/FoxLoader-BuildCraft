@@ -2,14 +2,14 @@ package com.chocohead.buildcraft.client;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.client.particle.EntityFX;
-import net.minecraft.src.client.renderer.Tessellator;
-import net.minecraft.src.client.renderer.entity.RenderManager;
-import net.minecraft.src.game.MathHelper;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.Entity;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.level.World;
+import net.minecraft.client.renderer.particle.EntityFX;
+import net.minecraft.client.renderer.world.Tessellator;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.common.util.math.MathHelper;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.Entity;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.world.World;
 
 import com.chocohead.buildcraft.Utils;
 
@@ -47,7 +47,7 @@ public class TileEntityPickupFX extends EntityFX {
         rndrY -= interpPosY;
         rndrZ -= interpPosZ;
         GL11.glColor4f(light, light, light, 1F);
-        RenderManager.instance.renderEntityWithPosYaw(entity, rndrX, rndrY, rndrZ, entity.rotationYaw, deltaTicks);
+        EntityRendererManager.instance.renderEntityWithPosYaw(entity, rndrX, rndrY, rndrZ, entity.rotationYaw, deltaTicks, false);
     }
 
     @Override

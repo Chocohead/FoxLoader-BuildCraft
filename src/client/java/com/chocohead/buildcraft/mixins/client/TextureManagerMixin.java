@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.src.client.renderer.block.TextureManager;
+import net.minecraft.client.renderer.block.TextureManager;
 
 @Mixin(TextureManager.class)
 abstract class TextureManagerMixin {

@@ -1,7 +1,7 @@
 package com.chocohead.buildcraft.api;
 
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.block.tileentity.TileEntity;
+import com.mojang.nbt.CompoundTag;
 
 public class PowerProvider {
 	private final SafeTimeTracker energyLossTracker = new SafeTimeTracker();
@@ -26,7 +26,7 @@ public class PowerProvider {
 		this.powerLossRegularity = powerLossRegularity;
 	}
 
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		minEnergyReceived = nbt.getInteger("minEnergyReceived");
 		maxEnergyReceived = nbt.getInteger("maxEnergyReceived");
 		maxEnergyStored = nbt.getInteger("maxStoreEnergy");
@@ -34,7 +34,7 @@ public class PowerProvider {
 		energyStored = nbt.getInteger("storedEnergy");
 	}
 
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		nbt.setInteger("minEnergyReceived", minEnergyReceived);
 		nbt.setInteger("maxEnergyReceived", maxEnergyReceived);
 		nbt.setInteger("maxStoreEnergy", maxEnergyStored);

@@ -1,13 +1,11 @@
 package com.chocohead.buildcraft.items;
 
-import com.fox2code.foxloader.registry.GameRegistry;
-
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.item.Item;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.item.Item;
 
 public class BuildCraftItem extends Item {
-	public BuildCraftItem(int id) {
-		super(id - GameRegistry.PARAM_ITEM_ID_DIFF);
+	public BuildCraftItem(String id) {
+		super(id);
 	}
 
 	@Override

@@ -1,17 +1,18 @@
 package com.chocohead.buildcraft.items;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.item.ItemBlock;
-import net.minecraft.src.game.item.ItemStack;
+import java.util.ArrayList;
 
-import com.fox2code.foxloader.registry.GameRegistry;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.block.Blocks;
+import net.minecraft.common.item.block.ItemBlock;
+import net.minecraft.common.item.ItemStack;
 
 import com.chocohead.buildcraft.blocks.PipeBlock;
 
 public class PipeItem extends ItemBlock {
-	public PipeItem(Block block, int id) {
-		super(id - GameRegistry.PARAM_ITEM_ID_DIFF, block.blockID);
+	public PipeItem(Block block) {
+		super(block);
 
 		setHasSubtypes(true);
 		setMaxDamage(0);
@@ -19,17 +20,24 @@ public class PipeItem extends ItemBlock {
 
 	@Override
 	public Icon getIconFromDamage(int damage) {
-		return Block.blocksList[blockID].getIcon(1, damage);
+		return Blocks.BLOCKS_LIST[blockID].getIcon(1, damage);
 	}
 
 	@Override
 	public String getItemNameIS(ItemStack stack) {
 		if (stack == null) return getItemName();
-		return ((PipeBlock) Block.blocksList[blockID]).getBlockName(stack.getItemDamage());
+		return ((PipeBlock) Blocks.BLOCKS_LIST[blockID]).getBlockName(stack.getItemDamage());
 	}
 
 	@Override
 	public int getPlacedBlockMetadata(int damage) {
 		return damage;
+	}
+
+	@Override
+	public void populateCreativeInventory(ArrayList<ItemStack> stacks) {
+		for (int i = 0; i <= 8; i++) {
+			stacks.add(new ItemStack(this, 1, i));
+		}
 	}
 }

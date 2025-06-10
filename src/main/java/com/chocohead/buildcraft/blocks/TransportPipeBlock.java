@@ -1,5 +1,8 @@
 package com.chocohead.buildcraft.blocks;
 
+import net.minecraft.common.world.World;
+
+import com.chocohead.buildcraft.items.PipeItem;
 import com.chocohead.buildcraft.pipes.ClayItemPipe;
 import com.chocohead.buildcraft.pipes.CobbleItemPipe;
 import com.chocohead.buildcraft.pipes.DiamondItemPipe;
@@ -13,13 +16,16 @@ import com.chocohead.buildcraft.pipes.WoodenItemPipe;
 import com.chocohead.buildcraft.pipes.transport.ItemPipeTransport;
 import com.chocohead.buildcraft.pipes.transport.PipeTransport;
 
-import net.minecraft.src.game.level.World;
-
 public class TransportPipeBlock extends PipeBlock {
-	public TransportPipeBlock(int id) {
+	public TransportPipeBlock(String id) {
 		super(id);
 
 		maxMetadata = 8;
+	}
+
+	@Override
+	protected PipeItem initializeItemBlock() {
+		return new PipeItem(this);
 	}
 
 	@Override

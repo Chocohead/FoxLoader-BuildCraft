@@ -1,9 +1,9 @@
 package com.chocohead.buildcraft.pipes;
 
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.world.World;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.blocks.PipeTileEntity;
 
@@ -28,10 +28,10 @@ public abstract class PipeLike {
 		this.container = tile;
 	}
 
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 	}
 
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 	}
 
 	public void initialize() {

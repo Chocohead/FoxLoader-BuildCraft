@@ -1,10 +1,10 @@
 package com.chocohead.buildcraft.pipes.logic;
 
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.player.EntityPlayer;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.BuildCraft;
 import com.chocohead.buildcraft.Utils;
@@ -21,12 +21,12 @@ public class IronPipeLogic extends PipeLogic {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		nbt.setInteger("source", exit.ordinal());
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		exit = Utils.ALL_DIRECTIONS[nbt.getInteger("source")];
 	}
 
@@ -84,7 +84,7 @@ public class IronPipeLogic extends PipeLogic {
 
 	@Override
 	public boolean blockActivated(EntityPlayer player) {
-		if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == BuildCraft.wrench) {
+		if (player.getHeldItem() != null && player.getHeldItem().getItem() == BuildCraft.wrench) {
 			switchExit();
 
 			return true;

@@ -1,6 +1,6 @@
 package com.chocohead.buildcraft.api;
 
-import net.minecraft.src.game.Direction.EnumDirection;
+import net.minecraft.common.util.Direction.EnumDirection;
 
 /**
  * Interface used to put objects into pipes, implemented by pipe tile entities.

@@ -2,31 +2,40 @@ package com.chocohead.buildcraft.blocks;
 
 import java.util.Random;
 
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.block.Material;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.level.IBlockAccess;
-import net.minecraft.src.game.level.World;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.block.data.Materials;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.EntityLiving;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.item.block.ItemBlock;
+import net.minecraft.common.world.BlockAccess;
+import net.minecraft.common.world.World;
 
 import com.chocohead.buildcraft.BuildCraft;
 import com.chocohead.buildcraft.Proxy;
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.IPipeConnection;
-import com.chocohead.buildcraft.client.EngineRenderer;
 import com.chocohead.buildcraft.engines.GearedEngine;
 import com.chocohead.buildcraft.engines.SteamEngine;
+import com.chocohead.buildcraft.items.EngineItem;
 
 public class EngineBlock extends MetaBlockContainer implements IPipeConnection {
-	public EngineBlock(int id) {
-		super(id, Material.iron);
+	public static int renderID;
+
+	public EngineBlock(String id) {
+		super(id, Materials.METAL);
 
 		setHardness(0.5F);
 	}
 
 	@Override
+	protected ItemBlock initializeItemBlock() {
+		return new EngineItem(this);
+	}
+
+	@Override
 	public int getRenderType() {
-		return EngineRenderer.renderID;
+		return renderID;
 	}
 
 	@Override
@@ -65,7 +74,7 @@ public class EngineBlock extends MetaBlockContainer implements IPipeConnection {
 	}
 
 	@Override
-	public boolean isPipeConnected(IBlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
+	public boolean isPipeConnected(BlockAccess world, int x1, int y1, int z1, int x2, int y2, int z2) {
 		EngineTileEntity tile = (EngineTileEntity) world.getBlockTileEntity(x1, y1, z1);
 		if (tile == null || tile.engine instanceof GearedEngine) {
 			return false;
@@ -119,8 +128,8 @@ public class EngineBlock extends MetaBlockContainer implements IPipeConnection {
 	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
 		EngineTileEntity tile = (EngineTileEntity) world.getBlockTileEntity(x, y, z);
 
-		if ((player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != BuildCraft.wrench) && tile.getEngine() instanceof SteamEngine) {
-			if (!world.multiplayerWorld) Proxy.displaySteamEngineGUI(player, tile);
+		if ((player.getHeldItem() == null || player.getHeldItem().getItem() != BuildCraft.wrench) && tile.getEngine() instanceof SteamEngine) {
+			if (!world.isRemote) Proxy.displaySteamEngineGUI(player, tile);
 
 			return true;
 		}
@@ -129,7 +138,7 @@ public class EngineBlock extends MetaBlockContainer implements IPipeConnection {
 	}
 
 	@Override
-	public boolean doWrenchRotation(World world, int x, int y, int z, int meta, boolean sneaking) {
+	public boolean doWrenchRotation(World world, int x, int y, int z, int meta, int facing, EntityLiving player) {
 		EngineTileEntity tile = (EngineTileEntity) world.getBlockTileEntity(x, y, z);
 		tile.switchOrientation();
 

@@ -1,15 +1,18 @@
 package com.chocohead.buildcraft.blocks.gui;
 
-import net.minecraft.src.client.gui.Container;
-import net.minecraft.src.client.gui.Slot;
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.common.block.container.Container;
+import net.minecraft.common.block.container.Slot;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.entity.player.InventoryPlayer;
+import net.minecraft.common.item.ItemStack;
 
 public class DiamondPipeContainer extends Container {
+	private final EntityPlayer player;
 	private final IInventory pipe;
 
-	public DiamondPipeContainer(IInventory player, IInventory pipe) {
+	public DiamondPipeContainer(InventoryPlayer player, IInventory pipe) {
+		this.player = player.player;
 		this.pipe = pipe;
 
 		for (int row = 0; row < 6; row++) {
@@ -59,7 +62,7 @@ public class DiamondPipeContainer extends Container {
 				return null;
 			}
 
-			slot.onPickupFromSlot(stack);
+			slot.onPickupFromSlot(player, stack);
 		}
 
 		return returnStack;

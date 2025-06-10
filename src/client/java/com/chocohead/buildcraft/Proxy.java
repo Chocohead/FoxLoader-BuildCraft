@@ -1,12 +1,12 @@
 package com.chocohead.buildcraft;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.Entity;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.level.WorldClient;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.Entity;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.world.World;
+import net.minecraft.client.world.WorldClient;
 
 import com.chocohead.buildcraft.blocks.EngineTileEntity;
 import com.chocohead.buildcraft.blocks.TransportPipeTileEntity;
@@ -28,12 +28,12 @@ public class Proxy {
 	}
 
 	public static void displayDiamondPipeGUI(EntityPlayer player, TransportPipeTileEntity tile) {
-		assert !player.worldObj.multiplayerWorld;
+		assert !player.worldObj.isRemote;
 		Minecraft.getInstance().displayGuiScreen(new DiamondPipeGUI(player.inventory, tile));
 	}
 
 	public static void displaySteamEngineGUI(EntityPlayer player, EngineTileEntity tile) {
-		assert !player.worldObj.multiplayerWorld;
+		assert !player.worldObj.isRemote;
 		Minecraft.getInstance().displayGuiScreen(new SteamEngineGUI(player.inventory, tile));
 	}
 }

@@ -1,14 +1,14 @@
 package com.chocohead.buildcraft.pipes;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.Entity;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.Entity;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.world.World;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.blocks.PipeTileEntity;
 import com.chocohead.buildcraft.pipes.logic.PipeLogic;
@@ -97,13 +97,13 @@ public abstract class Pipe<T extends PipeTransport> extends PipeLike {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		transport.writeToNBT(nbt);
 		logic.writeToNBT(nbt);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		transport.readFromNBT(nbt);
 		logic.readFromNBT(nbt);
 	}

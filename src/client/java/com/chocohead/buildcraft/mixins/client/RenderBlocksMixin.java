@@ -1,48 +1,31 @@
 package com.chocohead.buildcraft.mixins.client;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 
-import net.minecraft.src.client.renderer.RenderBlocks;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.level.IBlockAccess;
+import net.minecraft.client.renderer.world.RenderBlocks;
+import net.minecraft.common.block.Block;
 
 import com.chocohead.buildcraft.client.BlockEntityRenderer.BlockEntityRenderBlocks;
-import com.chocohead.buildcraft.client.RenderTypeRegistry;
-import com.chocohead.buildcraft.mixins.Plugin;
+import com.chocohead.buildcraft.client.BlockRenderPlus;
 
 @Mixin(RenderBlocks.class)
 abstract class RenderBlocksMixin implements BlockEntityRenderBlocks {
-	@Shadow
-	private IBlockAccess blockAccess;
 	@Unique
 	private boolean blockEntityRenderer;
 
-	@Inject(method = "renderBlockByRenderType", at = @At(value = "CONSTANT", args = "stringValue=" + Plugin.RENDER_BLOCKS_MAGIC), cancellable = true)
-	private void hookBuildCraftRenderTypes(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> call, @Local(ordinal = 3) int type) {
-		if (RenderTypeRegistry.render((RenderBlocks) (Object) this, blockAccess, x, y, z, block, type)) call.setReturnValue(true);
-	}
-
-	@Inject(method = "renderItemIn3d", at = @At(value = "CONSTANT", args = "intValue=16"), cancellable = true)
-	private static void hook3DBuildCraftRenderTypes(int type, CallbackInfoReturnable<Boolean> call) {
-		if (RenderTypeRegistry.renderItemIn3D(type)) call.setReturnValue(true);
-	}
-
-	@Inject(method = "renderBlockOnInventory", at = @At(value = "JUMP", ordinal = 0), slice = @Slice(from = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/src/game/block/Block;setBlockBounds(FFFFFF)V")), cancellable = true)
+	@Inject(method = "renderBlockOnInventory", at = @At(value = "CONSTANT", args = "intValue=1", ordinal = 0), cancellable = true)
 	private void hookBuildCraftRenderTypes(Block block, int damage, float light, CallbackInfo call, @Local(ordinal = 1) int type) {
-		RenderTypeRegistry.render((RenderBlocks) (Object) this, block, damage, type);
+		BlockRenderPlus.render((RenderBlocks) (Object) this, block, damage, type);
 	}
 
-	@WrapWithCondition(method = "renderBlockFallingSand", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/game/block/Block;setBlockBounds(FFFFFF)V", ordinal = 1))
+	@WrapWithCondition(method = "renderBlockFallingSand", at = @At(value = "INVOKE", target = "Lnet/minecraft/common/block/Block;setBlockBounds(FFFFFF)V", ordinal = 1))
 	private boolean pretendToBeSand(Block block, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
 		return !blockEntityRenderer;
 	}

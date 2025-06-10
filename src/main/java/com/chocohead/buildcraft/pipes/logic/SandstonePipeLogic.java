@@ -1,6 +1,6 @@
 package com.chocohead.buildcraft.pipes.logic;
 
-import net.minecraft.src.game.block.tileentity.TileEntity;
+import net.minecraft.common.block.tileentity.TileEntity;
 
 import com.chocohead.buildcraft.blocks.PipeTileEntity;
 

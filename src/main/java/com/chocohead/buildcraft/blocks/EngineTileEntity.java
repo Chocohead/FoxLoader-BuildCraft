@@ -1,11 +1,11 @@
 package com.chocohead.buildcraft.blocks;
 
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.item.ItemStack;
-import net.minecraft.src.game.nbt.NBTTagCompound;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.item.ItemStack;
+import com.mojang.nbt.CompoundTag;
 
 import com.chocohead.buildcraft.api.IPowerReceptor;
 import com.chocohead.buildcraft.api.Position;
@@ -40,21 +40,21 @@ public class EngineTileEntity extends TileEntity implements IPowerReceptor, IInv
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(CompoundTag nbt) {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("kind", worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 		engine.writeToNBT(nbt);
 
 		if (inventory != null) {
-			NBTTagCompound stack = new NBTTagCompound();
+			CompoundTag stack = new CompoundTag();
 			inventory.writeToNBT(stack);
 			nbt.setTag("inventory", stack);
 		}
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundTag nbt) {
 		super.readFromNBT(nbt);
 
 		int kind = nbt.getInteger("kind");
@@ -73,8 +73,8 @@ public class EngineTileEntity extends TileEntity implements IPowerReceptor, IInv
 		engine.readFromNBT(nbt);
 
 		if (nbt.hasKey("inventory")) {
-			NBTTagCompound stack = nbt.getCompoundTag("inventory");
-			inventory = new ItemStack(stack);
+			CompoundTag stack = nbt.getCompoundTag("inventory");
+			inventory = ItemStack.loadItemStackFromNBT(stack);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class EngineTileEntity extends TileEntity implements IPowerReceptor, IInv
 	@Override
 	public void updateEntity() {
 		if (!initialized) {
-			if (!worldObj.multiplayerWorld) {
+			if (!worldObj.isRemote) {
 				power.configure(1, engine.maxEnergyReceived, 1, engine.maxEnergy);
 			}
 			initialized = true;
@@ -95,7 +95,7 @@ public class EngineTileEntity extends TileEntity implements IPowerReceptor, IInv
 			return;
 		}
 
-		if (worldObj.multiplayerWorld) {
+		if (worldObj.isRemote) {
 			if (progressPart != 0) {
 				engine.progress += serverPistonSpeed;
 				
@@ -167,7 +167,7 @@ public class EngineTileEntity extends TileEntity implements IPowerReceptor, IInv
 
 	@Override
 	public void doWork() {
-		if (!worldObj.multiplayerWorld) {
+		if (!worldObj.isRemote) {
 			engine.addEnergy((int) (power.useEnergy(1, engine.maxEnergyReceived, true) * 0.95F));
 		}
 	}

@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.src.client.inventory.IInventory;
-import net.minecraft.src.game.Direction.EnumDirection;
-import net.minecraft.src.game.IntHashMap;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.entity.other.EntityItem;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.game.nbt.NBTTagCompound;
-import net.minecraft.src.game.nbt.NBTTagList;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.util.Direction.EnumDirection;
+import net.minecraft.common.block.tileentity.TileEntity;
+import net.minecraft.common.entity.other.EntityItem;
+import net.minecraft.common.world.World;
+import com.mojang.nbt.CompoundTag;
+import com.mojang.nbt.ListTag;
 
-import com.chocohead.buildcraft.IntHashMapExtras;
-import com.chocohead.buildcraft.IntHashMapExtras.IntHashMapEntryExtras;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
 import com.chocohead.buildcraft.StackUtil;
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.EntityPassiveItem;
@@ -35,29 +35,28 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 			this.orientation = orientation;
 		}
 	}
-	private final IntHashMap<EntityData> travellingEntities = new IntHashMap<>();
+	private final Int2ObjectMap<EntityData> travellingEntities = new Int2ObjectOpenHashMap<>();
 	private final List<EntityData> entitiesToLoad = new ArrayList<>();
 
 	public Iterable<EntityData> getTravellingEntities() {
-		return IntHashMapExtras.wrap(travellingEntities).values();
+		return travellingEntities.values();
 	}
 
 	public EntityData[] cloneTravellingEntities() {
-		IntHashMapExtras<EntityData> map = IntHashMapExtras.wrap(travellingEntities);
-		EntityData[] out = new EntityData[map.size()];
+		EntityData[] out = new EntityData[travellingEntities.size()];
 		int i = 0;
-		for (EntityData data : map.values()) {
+		for (EntityData data : getTravellingEntities()) {
 			out[i++] = data;
 		}
 		return out;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
-		NBTTagList list = new NBTTagList();
+	public void writeToNBT(CompoundTag nbt) {
+		ListTag<CompoundTag> list = new ListTag<>();
 
 		for (EntityData data : getTravellingEntities()) {
-			NBTTagCompound item = new NBTTagCompound();
+			CompoundTag item = new CompoundTag();
 			list.setTag(item);
 			data.item.writeToNBT(item);
 			item.setBoolean("toCenter", data.toCenter);
@@ -68,12 +67,10 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		NBTTagList list = nbt.getTagList("travellingEntities");
+	public void readFromNBT(CompoundTag nbt) {
+		ListTag<CompoundTag> list = nbt.getTagList("travellingEntities");
 
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound item = (NBTTagCompound) list.tagAt(i);
-
+		for (CompoundTag item : list) {
 			EntityPassiveItem entity = new EntityPassiveItem(world);
 			entity.readFromNBT(item);
 			entity.container = container;
@@ -98,8 +95,8 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 	public void entityEntering(EntityPassiveItem item, EnumDirection orientation) {
 		adjustSpeed(item);			
 
-		if (!travellingEntities.containsItem(item.entityId)) {
-			travellingEntities.addKey(item.entityId, new EntityData(item, orientation));
+		if (!travellingEntities.containsKey(item.entityId)) {
+			travellingEntities.put(item.entityId, new EntityData(item, orientation));
 
 			item.container = container;
 		}
@@ -112,7 +109,7 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 			((SpecialItemTransportPipe) container.getPipe()).entityEntered(item, orientation);
 		}
 
-		if (!world.multiplayerWorld) {
+		if (!world.isRemote) {
 			if (item.synchroTracker.markTimeIfDelay(world, 20)) {
 				/*/ FIXME: what about the other items???
 				CoreProxy.sendToPlayers(createItemPacket(item, orientation),
@@ -188,7 +185,7 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 			return EnumDirection.UNKNOWN;
 		} else {
 			int i;
-			if (world.multiplayerWorld || world.getClass() != World.class) {
+			if (world.isRemote || world.getClass() != World.class) {
 				i = Math.abs(data.item.entityId + xCoord + yCoord + zCoord + data.item.deterministicRandomization) % listOfPossibleMovements.size();
 			} else {
 				i = world.rand.nextInt(listOfPossibleMovements.size());
@@ -201,14 +198,13 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 	@Override
 	public void updateEntity() {
 		for (EntityData data : entitiesToLoad) {
-			travellingEntities.addKey(data.item.entityId, data);
+			travellingEntities.put(data.item.entityId, data);
 		}
 		entitiesToLoad.clear();
 
 		Position motion = new Position(0, 0, 0);
-		for (Iterator<? extends IntHashMapEntryExtras<EntityData>> it = IntHashMapExtras.wrap(travellingEntities).entrySetIterator(); it.hasNext();) {
-			IntHashMapEntryExtras<EntityData> entry = it.next();
-			EntityData data = entry.getValue();
+		for (Iterator<? extends EntityData> it = travellingEntities.values().iterator(); it.hasNext();) {
+			EntityData data = it.next();
 
 			motion.set(data.item.posX, data.item.posY, data.item.posZ, data.orientation);
 			motion.moveForwards(data.item.speed);
@@ -248,7 +244,7 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 
 					((ItemPipeTransport) pipe.getPipe().transport).entityEntering(data.item, data.orientation);
 				} else if (tile instanceof IInventory) {
-					if (!world.multiplayerWorld) {
+					if (!world.isRemote) {
 						if (StackUtil.checkAvailableSlot((IInventory) tile, data.item.item, true, Utils.reverseDirection(motion.orientation))
 								&& data.item.item.stackSize == 0) {
 							// Do nothing, we're adding the object to the world	
@@ -305,6 +301,6 @@ public class ItemPipeTransport extends PipeTransport implements IPipeEntry, Spec
 			data.item.toEntityItem(world, data.orientation);
 		}
 
-		travellingEntities.clearMap();
+		travellingEntities.clear();
 	}
 }

@@ -1,7 +1,7 @@
 package com.chocohead.buildcraft.pipes;
 
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.block.icon.IconRegister;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.common.block.icon.IconRegister;
 
 import com.chocohead.buildcraft.Utils;
 import com.chocohead.buildcraft.api.EntityPassiveItem;

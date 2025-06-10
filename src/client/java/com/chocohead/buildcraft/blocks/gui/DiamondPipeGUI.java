@@ -2,15 +2,16 @@ package com.chocohead.buildcraft.blocks.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.client.gui.GuiContainer;
-import net.minecraft.src.client.gui.StringTranslate;
-import net.minecraft.src.client.inventory.IInventory;
+import net.minecraft.client.gui.GuiContainer;
+import net.minecraft.common.util.i18n.StringTranslate;
+import net.minecraft.common.entity.inventory.IInventory;
+import net.minecraft.common.entity.player.InventoryPlayer;
 
 public class DiamondPipeGUI extends GuiContainer {
 	private final IInventory playerInventory;
 	private final IInventory filterInventory;
 
-	public DiamondPipeGUI(IInventory playerInventory, IInventory filterInventory) {
+	public DiamondPipeGUI(InventoryPlayer playerInventory, IInventory filterInventory) {
 		super(new DiamondPipeContainer(playerInventory, filterInventory));
 
 		this.playerInventory = playerInventory;

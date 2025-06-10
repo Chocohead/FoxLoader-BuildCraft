@@ -4,30 +4,29 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.client.renderer.RenderBlocks;
-import net.minecraft.src.client.renderer.Tessellator;
-import net.minecraft.src.client.renderer.block.icon.Icon;
-import net.minecraft.src.client.renderer.entity.RenderManager;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.tileentity.TileEntity;
-import net.minecraft.src.game.block.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.src.game.item.ItemBlock;
-import net.minecraft.src.game.item.ItemStack;
+import net.minecraft.client.renderer.world.RenderBlocks;
+import net.minecraft.client.renderer.world.Tessellator;
+import net.minecraft.common.block.icon.Icon;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.block.Blocks;
+import net.minecraft.client.renderer.block.tileentity.TileEntityRenderer;
+import net.minecraft.common.item.block.ItemBlock;
+import net.minecraft.common.item.ItemStack;
 
 import com.chocohead.buildcraft.api.EntityPassiveItem;
 import com.chocohead.buildcraft.blocks.TransportPipeTileEntity;
 import com.chocohead.buildcraft.pipes.transport.ItemPipeTransport.EntityData;
 
-public class TransportPipeRenderer extends TileEntitySpecialRenderer {
+public class TransportPipeRenderer extends TileEntityRenderer<TransportPipeTileEntity> {
 	private final RenderBlocks renderBlocks = new RenderBlocks();
 	private final Random random = new Random();
 
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int progress) {
+	public void renderTileEntityAt(TransportPipeTileEntity pipe, double x, double y, double z, float partialTicks, int progress) {
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_LIGHTING);
 
-		TransportPipeTileEntity pipe = (TransportPipeTileEntity) tile;
 		for (EntityData data : pipe.getPipe().transport.cloneTravellingEntities()) {
 			doRenderItem(data.item,
 					x + data.item.posX - pipe.xCoord,
@@ -63,11 +62,11 @@ public class TransportPipeRenderer extends TileEntitySpecialRenderer {
 		GL11.glEnable(32826 /* GL_RESCALE_NORMAL_EXT */);
 
 		if (stack.getItemSpriteNumber() == 0 && stack.getItem().isItemBlock()
-				&& RenderBlocks.renderItemIn3d(Block.blocksList[((ItemBlock) stack.getItem()).blockID].getRenderType())) {
+				&& RenderBlocks.renderItemIn3d(Blocks.BLOCKS_LIST[((ItemBlock) stack.getItem()).blockID].getRenderType())) {
 			GL11.glTranslatef(0, 0.25F, 0);
 			bindTextureByName("/terrain.png");
 
-			Block block = Block.blocksList[((ItemBlock) stack.getItem()).blockID];
+			Block block = Blocks.BLOCKS_LIST[((ItemBlock) stack.getItem()).blockID];
 			float scale = 0.25F;
 			/*if (!Block.blocksList[stack.itemID].renderAsNormalBlock()
 					&& stack.itemID != Block.slabSingleRock.blockID) {
@@ -110,7 +109,7 @@ public class TransportPipeRenderer extends TileEntitySpecialRenderer {
 					float jitterZ = (random.nextFloat() * 2F - 1F) * 0.3F;
 					GL11.glTranslatef(jitterX, jitterY, jitterZ);
 				}
-				GL11.glRotatef(180F - RenderManager.instance.playerViewY, 0F, 1F, 0F);
+				GL11.glRotatef(180F - EntityRendererManager.instance.playerViewY, 0F, 1F, 0F);
 				tessellator.startDrawingQuads();
 				tessellator.setNormal(0F, 1F, 0F);
 				tessellator.addVertexWithUV(0F - f13, 0F - f14, 0D, minX, maxY);
