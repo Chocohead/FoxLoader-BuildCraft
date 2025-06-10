@@ -32,6 +32,15 @@ sourcesJar.configure {
 	from sourceSets.client.allSource
 }
 
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 8
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 foxloader {
 	modId = "buildcraft"
 	modName = "BuildCraft"
