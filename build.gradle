@@ -7,9 +7,6 @@ buildscript {
 		classpath('com.fox2code.FoxLoader:dev:2.0-alpha15')
 	}
 }
-plugins {
-	id 'io.github.themrmilchmann.ecj' version '0.2.0'
-}
 
 apply plugin: 'foxloader.dev'
 
@@ -30,15 +27,6 @@ sourceSets {
 
 sourcesJar.configure {
 	from sourceSets.client.allSource
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 8
-}
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 foxloader {
